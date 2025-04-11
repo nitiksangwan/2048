@@ -1,0 +1,18 @@
+/* ===== 2048 Deluxe: Updated CSS ===== */
+:root {
+  --color-bg: #f8f9fa;
+  --color-text: #212529;
+  --color-primary: #4263eb;
+  --color-primary-hover: #364fc7;
+  --color-tile-bg: #e9ecef;
+  --color-white: #ffffff;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --transition: all 0.2s ease;
+}
+
+/* Rest of the CSS content would go here */
+/* (Same content as previous attempt but in a new file) */
