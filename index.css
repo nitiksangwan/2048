@@ -142,18 +142,25 @@ button {
   background: var(--color-primary);
   color: var(--color-white);
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   margin: 8px;
   border-radius: var(--border-radius-sm);
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: var(--transition);
+  min-width: 100px;
+  min-height: 48px;
+  touch-action: manipulation;
 }
 
-button:hover {
+button:hover, button:active {
   background: var(--color-primary-hover);
   transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(1px);
 }
 
 /* Lime color scheme */
@@ -231,6 +238,7 @@ button:hover {
   
   .controls {
     flex-wrap: wrap;
+    gap: 8px;
   }
   
   #grid {
@@ -242,5 +250,11 @@ button:hover {
     width: 60px;
     height: 60px;
     font-size: 1.5rem;
+  }
+
+  button {
+    padding: 16px;
+    min-width: 80px;
+    font-size: 0.9rem;
   }
 }

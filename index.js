@@ -100,6 +100,44 @@ function spawnTile() {
   };
 }
 
+// Touch Handling
+let touchStartX = 0;
+let touchStartY = 0;
+const minSwipeDistance = 40;
+
+elements.board.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+elements.board.addEventListener('touchend', (e) => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const touchEndY = e.changedTouches[0].clientY;
+  
+  const dx = touchEndX - touchStartX;
+  const dy = touchEndY - touchStartY;
+  
+  // Check if swipe distance meets threshold
+  if (Math.abs(dx) > minSwipeDistance || Math.abs(dy) > minSwipeDistance) {
+    // Horizontal swipe takes precedence
+    if (Math.abs(dx) > Math.abs(dy)) {
+      if (dx > 0) moveRight();
+      else moveLeft();
+    } else {
+      if (dy > 0) moveDown();
+      else moveUp();
+    }
+    
+    // Trigger game update if moved
+    saveStateForUndo();
+    spawnTile();
+    renderBoard();
+    updateScore();
+    saveHighScore();
+    checkGameOver();
+  }
+}, { passive: false });
+
 // Movement Handling
 document.addEventListener("keydown", handleKeyPress);
 
@@ -278,9 +316,6 @@ function startNewGame() {
   initGame();
 }
 
-function changeMode(mode) {
-  console.log("Mode changed to:", mode);
-}
 
 document.getElementById("undo-btn")?.addEventListener("click", undoMove);
 document.getElementById("break-btn")?.addEventListener("click", startBreakMode);

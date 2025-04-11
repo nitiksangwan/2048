@@ -2,13 +2,13 @@
 
 An enhanced version of the classic 2048 game with special features like undo and break modes.
 
+![Game Screenshot](screenshot.png)
 
 ## Features
 
 - **Classic 2048 Gameplay**: Merge tiles to reach 2048 and beyond
 - **Undo Feature**: Revert your last move (limited uses)
 - **Break Mode**: Remove any tile from the board (limited uses)
-- **Multiple Difficulty Levels**: Easy, Medium, Hard
 - **Responsive Design**: Works on desktop and mobile devices
 - **Visual Animations**: Smooth tile movements and merges
 - **Score Tracking**: Local high score saving
@@ -33,11 +33,22 @@ An enhanced version of the classic 2048 game with special features like undo and
 
 GitHub Repository: [https://github.com/nitiksangwan/2048](https://github.com/nitiksangwan/2048)
 
+## Mobile Play
+
+- **Swipe Controls**: Swipe in any direction to move tiles (up/down/left/right)
+- **Optimized Touch Targets**: Large buttons designed for fingers
+- **Touch Feedback**: Visual feedback when interacting with controls
+- **Responsive Layout**: Adapts to any screen size
+- **Full Feature Parity**: All features available on mobile including Undo and Break modes
+
 ## Controls
 
-- **Keyboard**: Arrow keys or WASD for movement
-- **Mouse**: Click buttons for special features
-- **Touch**: Works on touchscreen devices
+- **Desktop**:
+  - Keyboard: Arrow keys or WASD for movement
+  - Mouse: Click buttons for special features
+- **Mobile**:
+  - Touch: Swipe to move tiles
+  - Tap buttons for special features
 
 ## Special Thanks
 
