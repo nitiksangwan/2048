@@ -2,7 +2,6 @@
 
 An enhanced version of the classic 2048 game with special features like undo and break modes.
 
-![Game Screenshot](screenshot.png)
 
 ## Features
 
