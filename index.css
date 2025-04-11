@@ -224,6 +224,7 @@ button:active {
   body {
     padding: 10px;
     justify-content: flex-start;
+    touch-action: manipulation;
   }
   
   h1 {
@@ -234,11 +235,13 @@ button:active {
   .score-panel {
     flex-direction: column;
     gap: 8px;
+    margin-bottom: 16px;
   }
   
   .controls {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
+    margin-bottom: 16px;
   }
   
   #grid {
@@ -247,14 +250,23 @@ button:active {
   }
   
   .tile {
-    width: 60px;
-    height: 60px;
+    width: 20vw;
+    height: 20vw;
+    max-width: 70px;
+    max-height: 70px;
     font-size: 1.5rem;
   }
 
   button {
     padding: 16px;
-    min-width: 80px;
-    font-size: 0.9rem;
+    min-width: 30vw;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+
+  /* Touch feedback */
+  button:active, .tile:active {
+    transform: scale(0.95);
+    opacity: 0.9;
   }
 }

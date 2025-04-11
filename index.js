@@ -3,7 +3,13 @@
 const boardSize = 4;
 let board = [];
 let score = 0;
-let highScore = localStorage.getItem("highScore") || 0;
+let highScore;
+try {
+  highScore = parseInt(localStorage.getItem("highScore")) || 0;
+} catch (e) {
+  console.error("Error accessing localStorage:", e);
+  highScore = 0;
+}
 let undoStack = [];
 let gameState = {
   breakingMode: false,
@@ -106,9 +112,15 @@ let touchStartY = 0;
 const minSwipeDistance = 40;
 
 elements.board.addEventListener('touchstart', (e) => {
+  e.preventDefault();
   touchStartX = e.touches[0].clientX;
   touchStartY = e.touches[0].clientY;
-}, { passive: true });
+  elements.board.classList.add('active-touch');
+}, { passive: false });
+
+elements.board.addEventListener('touchcancel', () => {
+  elements.board.classList.remove('active-touch');
+});
 
 elements.board.addEventListener('touchend', (e) => {
   const touchEndX = e.changedTouches[0].clientX;
@@ -223,7 +235,11 @@ function moveDown() {
 }
 
 function arraysEqual(a, b) {
-  return JSON.stringify(a) === JSON.stringify(b);
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
 }
 
 // ==== Undo Feature ====
