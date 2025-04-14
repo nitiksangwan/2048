@@ -12,19 +12,21 @@
 </head>
 <body aria-label="2048 game board">
 
-  <!-- Top Banner Ad -->
-  <aside id="ad-top-banner" class="ad-space" aria-label="Advertisement">
-    [ Ad Space – Top Banner ]
-  </aside>
-
   <main class="game-container-wrapper" aria-label="Game area">
     <article class="game-container" aria-label="Game board">
       <header>
-        <h1>2048</h1>
-
-        <div class="score-panel" aria-live="polite">
-          <div>Score: <span id="score" aria-label="Current score">0</span></div>
-          <div>High Score: <span id="high-score" aria-label="High score">0</span></div>
+        <div class="title-container">
+          <h1>2048</h1>
+          <div class="score-panel">
+            <div class="score-box">
+              <div class="score-label">SCORE</div>
+              <div id="score" class="score-value">0</div>
+            </div>
+            <div class="score-box">
+              <div class="score-label">BEST</div>
+              <div id="high-score" class="score-value">0</div>
+            </div>
+          </div>
         </div>
 
         <div class="controls">
@@ -38,21 +40,7 @@
         <!-- Tiles will be generated dynamically -->
       </div>
     </article>
-
-    <!-- Sidebar Ad -->
-    <aside id="ad-sidebar" class="ad-space" aria-label="Advertisement">
-      [ Ad Space – Sidebar ]
-    </aside>
   </main>
-
-  <!-- Ad Modal -->
-  <dialog id="ad-modal" class="modal hidden" aria-label="Advertisement modal">
-    <div class="modal-content">
-      <button id="close-ad" class="close-btn" aria-label="Close ad">&times;</button>
-      <p>Watch an ad to continue...</p>
-      <button onclick="closeAdAndUndo()" aria-label="Continue after ad">Continue</button>
-    </div>
-  </dialog>
 
   <script src="index.js"></script>
 </body>
