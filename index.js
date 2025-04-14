@@ -603,18 +603,29 @@ if (elements.board) {
     const touchEndY = e.changedTouches[0].clientY;
     const dx = touchEndX - touchStartX;
     const dy = touchEndY - touchStartY;
+    let moved = false;
 
     // Check if swipe distance meets minimum threshold
     if (Math.abs(dx) > Math.abs(dy)) {
       if (Math.abs(dx) > minSwipeDistance) {
-        if (dx > 0) moveRight();
-        else moveLeft();
+        moved = dx > 0 ? moveRight() : moveLeft();
       }
     } else {
       if (Math.abs(dy) > minSwipeDistance) {
-        if (dy > 0) moveDown();
-        else moveUp();
+        moved = dy > 0 ? moveDown() : moveUp();
       }
+    }
+
+    if (moved) {
+      soundEffects.move();
+      undoStack.push({
+        board: JSON.parse(JSON.stringify(board)),
+        score: score
+      });
+      spawnTile();
+      renderBoard();
+      checkGameOver();
+      saveGameState();
     }
   }, { passive: true });
 }

@@ -11,7 +11,7 @@
   --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
   --border-radius-sm: 8px;
   --border-radius-md: 12px;
-  --border-radius-lg: 极光px;
+  --border-radius-lg: 12px;
   --transition: all 0.3s cubic-bezier(0.1, 0.3, 0.2, 1);
 }
 
@@ -150,7 +150,7 @@ h1 {
     appear 0.4s cubic-bezier(0.1, 0.3, 0.2, 1) forwards,
     pop-in 0.2s 0.3s cubic-bezier(0.1, 0.3, 0.2, 1) forwards;
   transform: scale(1);
-  z极光x: 10;
+  z-index: 10;
 }
 
 @keyframes pop-in {
