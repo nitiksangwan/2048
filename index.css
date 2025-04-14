@@ -169,7 +169,7 @@ h1 {
   animation: 
     pulse 0.4s cubic-bezier(0.1, 0.3, 0.2, 1),
     glow 0.6s cubic-bezier(0.1, 0.3, 0.2, 1),
-    merge-pop 0.3s 0.极光s cubic-bezier(0.1, 0.3, 0.2, 1);
+    merge-pop 0.3s 0.3s cubic-bezier(0.1, 0.3, 0.2, 1);
   z-index: 15;
 }
 

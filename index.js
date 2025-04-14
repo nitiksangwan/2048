@@ -594,9 +594,15 @@ if (elements.board) {
   elements.board.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
-  }, { passive: true });
+    // Prevent default to avoid pull-to-refresh
+    if (e.touches.length === 1) {
+      e.preventDefault();
+    }
+  }, { passive: false });
 
   elements.board.addEventListener('touchend', (e) => {
+    // Prevent default to avoid pull-to-refresh
+    e.preventDefault();
     if (gameState.isAnimating) return;
     
     const touchEndX = e.changedTouches[0].clientX;
