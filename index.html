@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play 2048 Deluxe with special features like undo and break modes">
+  <meta property="og:title" content="2048 Deluxe">
+  <meta property="og:description" content="Enhanced version of the classic 2048 game">
+  <meta property="og:type" content="website">
+  <title>2048 Deluxe</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body aria-label="2048 game board">
+
+  <main class="game-container-wrapper" aria-label="Game area">
+    <article class="game-container" aria-label="Game board">
+      <header>
+        <div class="title-container">
+          <h1>2048</h1>
+          <div class="score-panel">
+            <div class="score-box">
+              <div class="score-label">SCORE</div>
+              <div id="score" class="score-value">0</div>
+            </div>
+            <div class="score-box">
+              <div class="score-label">BEST</div>
+              <div id="high-score" class="score-value">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button onclick="startNewGame()" aria-label="Start new game">New Game</button>
+          <button onclick="undoMove()" aria-label="Undo last move">Undo</button>
+          <button onclick="startBreakMode()" aria-label="Activate break mode">Break Tile</button>
+        </div>
+      </header>
+
+      <div class="game-board" id="grid" role="grid" aria-label="Game tiles">
+        <!-- Tiles will be generated dynamically -->
+      </div>
+    </article>
+  </main>
+
+  <script src="index.js"></script>
+</body>
+</html>
