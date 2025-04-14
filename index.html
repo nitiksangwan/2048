@@ -31,8 +31,8 @@
 
         <div class="controls">
           <button onclick="startNewGame()" aria-label="Start new game">New Game</button>
-          <button onclick="undoMove()" aria-label="Undo last move">Undo</button>
-          <button onclick="startBreakMode()" aria-label="Activate break mode">Break Tile</button>
+          <button onclick="undoMove()" aria-label="Undo last move">Undo (<span id="undo-counter">3</span>)</button>
+          <button onclick="window.startBreakMode()" aria-label="Activate break mode">Break Tile (<span id="break-counter">3</span>)</button>
         </div>
       </header>
 

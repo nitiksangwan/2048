@@ -237,46 +237,99 @@ button:active {
   transform: translateY(1px);
 }
 
+/* Break mode indicator */
+.break-mode-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff0000, #ff5e00, #ffbb00);
+  z-index: 100;
+  animation: break-pulse 1s infinite;
+}
+
+@keyframes break-pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* Tile selected for breaking */
+.tile.selected-to-break {
+  animation: selected-pulse 0.5s infinite alternate;
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.5);
+}
+
+@keyframes selected-pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
 /*  2048 color scheme */
-.tile[data-value="2"] { background: #A259FF; color: #ffffff; }
-.tile[data-value="4"] { background: #F72585; color: #ffffff; }
-.tile[data-value="8"] { background: #FFC300; color: #000000; }
-.tile[data-value="16"] { background: #06ce1a; color: #000000; }
-.tile[data-value="32"] { background: #07caf1; color: #ffffff; }
-.tile[data-value="64"] { background: #D833A6; color: #ffffff; }
+.tile[data-value="2"] { 
+  background: #A259FF; 
+  color: #ffffff; 
+  font-size: 55px; 
+}
+.tile[data-value="4"] { 
+  background: #F72585; 
+  color: #ffffff; 
+  font-size: 55px; 
+}
+.tile[data-value="8"] { 
+  background: #FFC300; 
+  color: #000000; 
+  font-size: 50px; 
+}
+.tile[data-value="16"] { 
+  background: #06ce1a; 
+  color: #000000; 
+  font-size: 50px; 
+}
+.tile[data-value="32"] { 
+  background: #07caf1; 
+  color: #ffffff; 
+  font-size: 45px; 
+}
+.tile[data-value="64"] { 
+  background: #D833A6; 
+  color: #ffffff; 
+  font-size: 45px; 
+}
 .tile[data-value="128"] { 
-  background: #FF6F00;
-  color: #ffffff;
-  font-size: 45px;
+  background: #FF6F00; 
+  color: #ffffff; 
+  font-size: 40px; 
 }
 .tile[data-value="256"] { 
-  background: #2ECCB8;
-  color: #000000;
-  font-size: 45px;
+  background: #2ECCB8; 
+  color: #000000; 
+  font-size: 40px; 
 }
 .tile[data-value="512"] { 
-  background: #00FFF7;
-  color: #000000;
-  font-size: 45px;
+  background: #00FFF7; 
+  color: #000000; 
+  font-size: 35px; 
 }
 .tile[data-value="1024"] { 
-  background: #FF1744;
-  color: #ffffff;
-  font-size: 35px;
+  background: #FF1744; 
+  color: #ffffff; 
+  font-size: 35px; 
 }
 .tile[data-value="2048"] { 
-  background: #6A0DAD;
-  color: #ffffff;
-  font-size: 35px;
+  background: #6A0DAD; 
+  color: #ffffff; 
+  font-size: 30px; 
 }
 .tile[data-value="4096"],
 .tile[data-value="8192"],
 .tile[data-value="16384"],
 .tile[data-value="32768"],
 .tile[data-value="65536"] {
-  background: #FFFFFF;
-  color: #000000;
-  font-size: 30px;
+  background: #FFFFFF; 
+  color: #000000; 
+  font-size: 30px; 
 }
 
 /* Mobile responsiveness */
@@ -331,9 +384,26 @@ button:active {
     min-height: 60px;
     max-width: 80px;
     max-height: 80px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     border-radius: 4px;
   }
+
+  .tile[data-value="2"] { font-size: 1.4rem; }
+  .tile[data-value="4"] { font-size: 1.4rem; }
+  .tile[data-value="8"] { font-size: 1.3rem; }
+  .tile[data-value="16"] { font-size: 1.3rem; }
+  .tile[data-value="32"] { font-size: 1.2rem; }
+  .tile[data-value="64"] { font-size: 1.2rem; }
+  .tile[data-value="128"] { font-size: 1.0rem; }
+  .tile[data-value="256"] { font-size: 1.0rem; }
+  .tile[data-value="512"] { font-size: 0.9rem; }
+  .tile[data-value="1024"] { font-size: 0.9rem; }
+  .tile[data-value="2048"] { font-size: 0.8rem; }
+  .tile[data-value="4096"],
+  .tile[data-value="8192"],
+  .tile[data-value="16384"],
+  .tile[data-value="32768"],
+  .tile[data-value="65536"] { font-size: 0.8rem; }
 
   button {
     padding: 10px 12px;

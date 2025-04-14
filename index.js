@@ -24,12 +24,25 @@ let audioEnabled = false;
 function initAudio() {
   if (!audioInitialized) {
     try {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      // Check for browser support
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) {
+        console.warn("Web Audio API not supported in this browser");
+        return;
+      }
+      
+      audioContext = new AudioContext();
       audioInitialized = true;
       
       // Enable audio after first user interaction
-      document.addEventListener('click', enableAudio, { once: true });
-      document.addEventListener('keydown', enableAudio, { once: true });
+      const enableOnce = () => {
+        enableAudio();
+        document.removeEventListener('click', enableOnce);
+        document.removeEventListener('keydown', enableOnce);
+      };
+      
+      document.addEventListener('click', enableOnce);
+      document.addEventListener('keydown', enableOnce);
     } catch (e) {
       console.error("Audio initialization failed:", e);
     }
@@ -153,18 +166,29 @@ function initGame() {
     return;
   }
   
-  // Try to load saved game
-  if (!loadGameState()) {
-    // Start fresh if no saved state
-    board = Array.from({ length: boardSize }, () => Array(boardSize).fill(0));
-    score = 0;
-    undoStack = [];
-    gameState.breakingMode = false;
+  // Initialize default values
+  board = Array.from({ length: boardSize }, () => Array(boardSize).fill(0));
+  score = 0;
+  undoStack = [];
+  gameState.breakingMode = false;
+  undoUsed = 0;
+  breakUsed = 0;
+
+  // Try to load saved game - will overwrite defaults if successful
+  if (loadGameState()) {
+    console.log("Loaded existing game state with:", {
+      undoUsed: undoUsed,
+      breakUsed: breakUsed
+    });
+  } else {
+    // Start fresh game
     spawnTile();
     spawnTile();
   }
   
   updateScore();
+  updateUndoCounter();
+  updateBreakCounter();
   renderBoard();
 }
 
@@ -249,6 +273,20 @@ function updateScore() {
         elements.highScore.classList.remove('new-highscore');
       }, 1000);
     }
+  }
+}
+
+function updateUndoCounter() {
+  const counter = document.getElementById('undo-counter');
+  if (counter) {
+    counter.textContent = 3 - undoUsed;
+  }
+}
+
+function updateBreakCounter() {
+  const counter = document.getElementById('break-counter');
+  if (counter) {
+    counter.textContent = 3 - breakUsed;
   }
 }
 
@@ -469,18 +507,27 @@ function undoMove() {
   board = lastState.board;
   score = lastState.score;
   undoUsed++;
+  updateUndoCounter(); // Update the undo counter display
   
   updateScore();
   renderBoard();
 }
 
-// Break Mode Functionality
-function startBreakMode() {
+// Make functions globally accessible
+window.startBreakMode = function() {
   if (breakUsed >= 3 || gameState.isAnimating) return;
   
   gameState.breakingMode = true;
   breakUsed++;
-  alert("Break mode activated! Click on a tile to break it.");
+  updateBreakCounter();
+  soundEffects.breakTile();
+  
+  // Visual feedback instead of alert
+  const breakIndicator = document.createElement('div');
+  breakIndicator.className = 'break-indicator';
+  breakIndicator.textContent = 'BREAK MODE: Click a tile to break it';
+  document.body.appendChild(breakIndicator);
+  setTimeout(() => breakIndicator.remove(), 2000);
 }
 
 // Keyboard Controls
@@ -511,25 +558,77 @@ document.addEventListener('keydown', (e) => {
 // Tile Click Handler for Break Mode
 function addTileClickListeners() {
   const tiles = document.querySelectorAll('.tile');
+  if (!tiles) return;
+
+  // Check if touch events are supported
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  
   tiles.forEach(tile => {
-    tile.onclick = () => {
+    // Handle both click and touch events
+    const handleBreak = () => {
       if (!gameState.breakingMode) return;
       
-      const index = Array.from(tiles).indexOf(tile);
-      const r = Math.floor(index / boardSize);
-      const c = index % boardSize;
-      
-      // Add broken class to trigger animation
-      tile.classList.add('broken');
-      soundEffects.breakTile();
-      
-      // Remove tile after animation completes
-      setTimeout(() => {
+      try {
+        const index = Array.from(tiles).indexOf(tile);
+        const r = Math.floor(index / boardSize);
+        const c = index % boardSize;
+        
+        if (board[r][c] === 0) return; // Don't break empty tiles
+        
+        console.log(`Breaking tile at (${r}, ${c}) with value: ${tile.dataset.value}`);
+        
+        // Enhanced break animation
+        tile.classList.add('breaking');
+        try {
+          soundEffects.breakTile();
+        } catch (e) {
+          console.warn("Couldn't play break sound:", e);
+        }
+        
+        // Create particle effects
+        const particles = document.createElement('div');
+        particles.className = 'particles';
+        tile.appendChild(particles);
+        
+        // Break the tile immediately but keep break mode active
         board[r][c] = 0;
         renderBoard();
-        gameState.breakingMode = false;
-      }, 500); // Match CSS animation duration
+        
+        // Visual feedback
+        const breakFeedback = document.createElement('div');
+        breakFeedback.className = 'break-feedback';
+        breakFeedback.textContent = `-${tile.dataset.value}`;
+        document.body.appendChild(breakFeedback);
+        setTimeout(() => breakFeedback.remove(), 1000);
+        
+        // Save game state after breaking a tile
+        try {
+          saveGameState();
+        } catch (e) {
+          console.warn("Couldn't save game state:", e);
+        }
+        
+        // Only exit break mode if we've used all breaks
+        if (breakUsed >= 3) {
+          gameState.breakingMode = false;
+        }
+      } catch (e) {
+        console.error("Error breaking tile:", e);
+      }
     };
+
+    // Standard click handler
+    tile.addEventListener('click', handleBreak);
+
+    // Enhanced touch handler for mobile
+    if (isTouchDevice) {
+      tile.addEventListener('touchstart', (e) => {
+        if (!gameState.breakingMode) return;
+        e.preventDefault();
+        console.log(`Touching tile at (${r}, ${c})`);
+        handleBreak();
+      }, { passive: false });
+    }
   });
 }
 
@@ -601,8 +700,6 @@ if (elements.board) {
   }, { passive: false });
 
   elements.board.addEventListener('touchend', (e) => {
-    // Prevent default to avoid pull-to-refresh
-    e.preventDefault();
     if (gameState.isAnimating) return;
     
     const touchEndX = e.changedTouches[0].clientX;
@@ -614,10 +711,12 @@ if (elements.board) {
     // Check if swipe distance meets minimum threshold
     if (Math.abs(dx) > Math.abs(dy)) {
       if (Math.abs(dx) > minSwipeDistance) {
+        e.preventDefault();
         moved = dx > 0 ? moveRight() : moveLeft();
       }
     } else {
       if (Math.abs(dy) > minSwipeDistance) {
+        e.preventDefault();
         moved = dy > 0 ? moveDown() : moveUp();
       }
     }
@@ -633,7 +732,7 @@ if (elements.board) {
       checkGameOver();
       saveGameState();
     }
-  }, { passive: true });
+  }, { passive: false });
 }
 
 if (elements.closeAd) {
