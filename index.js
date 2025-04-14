@@ -625,6 +625,9 @@ function addTileClickListeners() {
       tile.addEventListener('touchstart', (e) => {
         if (!gameState.breakingMode) return;
         e.preventDefault();
+        const index = Array.from(tiles).indexOf(tile);
+        const r = Math.floor(index / boardSize);
+        const c = index % boardSize;
         console.log(`Touching tile at (${r}, ${c})`);
         handleBreak();
       }, { passive: false });
