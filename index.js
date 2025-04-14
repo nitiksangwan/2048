@@ -608,10 +608,8 @@ function addTileClickListeners() {
           console.warn("Couldn't save game state:", e);
         }
         
-        // Only exit break mode if we've used all breaks
-        if (breakUsed >= 3) {
-          gameState.breakingMode = false;
-        }
+        // End break mode after breaking one tile
+        gameState.breakingMode = false;
       } catch (e) {
         console.error("Error breaking tile:", e);
       }
@@ -622,14 +620,23 @@ function addTileClickListeners() {
 
     // Enhanced touch handler for mobile
     if (isTouchDevice) {
+      let touchActive = false;
+      
       tile.addEventListener('touchstart', (e) => {
-        if (!gameState.breakingMode) return;
+        if (!gameState.breakingMode || touchActive) return;
         e.preventDefault();
+        touchActive = true;
+        
         const index = Array.from(tiles).indexOf(tile);
         const r = Math.floor(index / boardSize);
         const c = index % boardSize;
-        console.log(`Touching tile at (${r}, ${c})`);
+        console.log(`Breaking tile at (${r}, ${c})`);
         handleBreak();
+        
+        // Reset after a short delay to prevent multiple breaks
+        setTimeout(() => {
+          touchActive = false;
+        }, 500);
       }, { passive: false });
     }
   });
