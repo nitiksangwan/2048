@@ -237,7 +237,7 @@ button:active {
   transform: translateY(1px);
 }
 
-/* Official 2048 color scheme */
+/*  2048 color scheme */
 .tile[data-value="2"] { background: #A259FF; color: #ffffff; }
 .tile[data-value="4"] { background: #F72585; color: #ffffff; }
 .tile[data-value="8"] { background: #FFC300; color: #000000; }
